@@ -12,7 +12,7 @@
 
 	  $(function() {
 	    typed.typed({
-	      strings: ["for your anniversary", "for that first date", "in DC", "in Maryland", "in Virginia", "to surprise that special someone", "for her burthday", "for mom" ],
+	      strings: ["for our anniversary", "for that first date", "in DC", "in Maryland", "in Virginia", "to surprise that special someone", "for her birthday", "for mom" ],
 	      typeSpeed: 65,
 	      loop: true,
 	    });

@@ -25,6 +25,33 @@
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* Fix placeholder visibility */
+			input::placeholder,
+			textarea::placeholder,
+			select::placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input::-webkit-input-placeholder,
+			textarea::-webkit-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input:-ms-input-placeholder,
+			textarea:-ms-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input::-ms-input-placeholder,
+			textarea::-ms-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -53,22 +80,49 @@
 						</ul>
 					</nav>
 
-				
-					<iframe
-					id="JotFormIFrame-241260077921149"
-					title="Contact Us"
-					onload="window.parent.scrollTo(0,0)"
-					allowtransparency="true"
-					allow="geolocation; microphone; camera; fullscreen"
-					src="https://form.jotform.com/241260077921149"
-					frameborder="0"
-					style="min-width:100%;max-width:100%;height:539px;border:none;"
-					scrolling="no"
-				  >
-				  </iframe>
-				  <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
-				  <script>window.jotformEmbedHandler("iframe[id='JotFormIFrame-241260077921149']", "https://form.jotform.com/")</script>
-				  
+
+				<!-- Main -->
+				<div id="main">
+					<section id="contact-form">
+						<div class="inner">
+							<header class="major">
+								<h2>Get In Touch</h2>
+							</header>
+							<p>Have questions about our luxury picnic experiences? We'd love to hear from you! Fill out the form below and we'll get back to you within 24 hours.</p>
+
+							<form id="contactForm" method="POST" action="https://api.web3forms.com/submit">
+								<input type="hidden" name="access_key" value="7be42e7b-c44b-498a-8a20-d239b784f809">
+								<input type="hidden" name="subject" value="New Contact Form Submission from Wanderluxe">
+								<input type="hidden" name="redirect" value="https://www.wanderluxepicnics.com/contact.html?success=true">
+
+								<div class="row gtr-uniform">
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="name" id="name" placeholder="Your Name" required />
+									</div>
+									<div class="col-6 col-12-xsmall">
+										<input type="email" name="email" id="email" placeholder="Your Email" required />
+									</div>
+									<div class="col-6">
+										<input type="tel" name="phone" id="phone" placeholder="Phone Number (Optional)" />
+									</div>
+									<div class="col-12">
+										<textarea name="message" id="message" placeholder="Your Message" rows="6" required></textarea>
+									</div>
+									<div class="col-12">
+										<div id="form-message" style="display: none; padding: 1em; margin-bottom: 1em; border-radius: 4px;"></div>
+									</div>
+									<div class="col-12">
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" class="primary" id="submit-btn" /></li>
+											<li><input type="reset" value="Clear" /></li>
+										</ul>
+									</div>
+								</div>
+							</form>
+						</div>
+					</section>
+				</div>
+
 				<!-- Contact -->
 				<section id="contact">
 					<div class="inner">	
@@ -76,7 +130,7 @@
 								<div class="col-4 col-12-medium">
 									<span class="icon solid alt fa-envelope"></span>
 									<h5>Email</h5>
-									<span>support@wanderluxepicnics.com</span>
+									<span>support@wanderluxe-rentals.com</span>
 								</div>
 								<div class="col-4 col-12-medium">
 									<span class="icon solid alt fa-phone"></span>
@@ -115,6 +169,75 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+
+			<!-- Contact Form Handler -->
+			<script>
+				// Show success message if redirected with success parameter
+				window.addEventListener('load', function() {
+					const urlParams = new URLSearchParams(window.location.search);
+					if (urlParams.get('success') === 'true') {
+						const messageDiv = document.getElementById('form-message');
+						messageDiv.style.display = 'block';
+						messageDiv.style.backgroundColor = '#d4edda';
+						messageDiv.style.color = '#155724';
+						messageDiv.style.border = '1px solid #c3e6cb';
+						messageDiv.innerHTML = '<strong>Success!</strong> Thank you for contacting us. We\'ll get back to you within 24 hours.';
+
+						// Clear the form
+						document.getElementById('contactForm').reset();
+
+						// Remove success parameter from URL
+						window.history.replaceState({}, document.title, window.location.pathname);
+					}
+				});
+
+				// Handle form submission
+				const form = document.getElementById('contactForm');
+				form.addEventListener('submit', async function(e) {
+					e.preventDefault();
+
+					const submitBtn = document.getElementById('submit-btn');
+					const messageDiv = document.getElementById('form-message');
+
+					// Disable submit button
+					submitBtn.disabled = true;
+					submitBtn.value = 'Sending...';
+
+					// Hide any previous messages
+					messageDiv.style.display = 'none';
+
+					try {
+						const formData = new FormData(form);
+						const response = await fetch('https://api.web3forms.com/submit', {
+							method: 'POST',
+							body: formData
+						});
+
+						const data = await response.json();
+
+						if (data.success) {
+							messageDiv.style.display = 'block';
+							messageDiv.style.backgroundColor = '#d4edda';
+							messageDiv.style.color = '#155724';
+							messageDiv.style.border = '1px solid #c3e6cb';
+							messageDiv.innerHTML = '<strong>Success!</strong> Thank you for contacting us. We\'ll get back to you within 24 hours.';
+							form.reset();
+						} else {
+							throw new Error(data.message || 'Something went wrong');
+						}
+					} catch (error) {
+						messageDiv.style.display = 'block';
+						messageDiv.style.backgroundColor = '#f8d7da';
+						messageDiv.style.color = '#721c24';
+						messageDiv.style.border = '1px solid #f5c6cb';
+						messageDiv.innerHTML = '<strong>Error!</strong> There was a problem sending your message. Please try again or email us directly at support@wanderluxe-rentals.com';
+					} finally {
+						// Re-enable submit button
+						submitBtn.disabled = false;
+						submitBtn.value = 'Send Message';
+					}
+				});
+			</script>
 
 	</body>
 </html>

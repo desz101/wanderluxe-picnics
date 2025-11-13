@@ -24,6 +24,33 @@
 		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* Fix placeholder visibility */
+			input::placeholder,
+			textarea::placeholder,
+			select::placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input::-webkit-input-placeholder,
+			textarea::-webkit-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input:-ms-input-placeholder,
+			textarea:-ms-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+
+			input::-ms-input-placeholder,
+			textarea::-ms-input-placeholder {
+				color: #999 !important;
+				opacity: 1 !important;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -52,9 +79,96 @@
 						</ul>
 					</nav>
 
+
+			<!-- Main -->
+			<div id="main">
+				<section id="booking-form">
 					<div class="inner">
-					<script type="text/javascript" src="https://form.jotform.com/jsform/231558502627154"></script>
-				</div>
+						<header class="major">
+							<h2>Book Your Luxury Picnic</h2>
+						</header>
+						<p>Ready to experience a luxurious outdoor escape? Fill out the form below to request your picnic booking. We'll review your request and get back to you within 24 hours to confirm availability and next steps.</p>
+
+						<form id="bookingForm" method="POST" action="https://api.web3forms.com/submit">
+							<input type="hidden" name="access_key" value="ea0a65c8-67fb-4ffb-8a6e-7ec3f3e2bced">
+							<input type="hidden" name="subject" value="New Picnic Booking Request from Wanderluxe">
+							<input type="hidden" name="redirect" value="https://www.wanderluxepicnics.com/reserve.html?success=true">
+
+							<div class="row gtr-uniform">
+								<div class="col-6 col-12-xsmall">
+									<label for="name">Name *</label>
+									<input type="text" name="name" id="name" placeholder="Your Name" required />
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="email">Email *</label>
+									<input type="email" name="email" id="email" placeholder="Your Email" required />
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="phone">Phone Number *</label>
+									<input type="tel" name="phone" id="phone" placeholder="Phone Number" required />
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="picnic_date">Preferred Picnic Date *</label>
+									<input type="date" name="picnic_date" id="picnic_date" required />
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="package">Package *</label>
+									<select name="package" id="package" required>
+										<option value="">- Select Package -</option>
+										<option value="Classic - $89/person">Classic - $89/person</option>
+										<option value="Boho - $99/person">Boho - $99/person</option>
+										<option value="Romantic - $109/person">Romantic - $109/person</option>
+										<option value="Comfort Package">Comfort Package</option>
+									</select>
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="guest_count">Number of Guests *</label>
+									<input type="number" name="guest_count" id="guest_count" placeholder="Number of Guests" min="1" required />
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="time">Preferred Time</label>
+									<select name="time" id="time">
+										<option value="">- Select Time -</option>
+										<option value="Morning (9am - 12pm)">Morning (9am - 12pm)</option>
+										<option value="Afternoon (12pm - 3pm)">Afternoon (12pm - 3pm)</option>
+										<option value="Evening (3pm - 6pm)">Evening (3pm - 6pm)</option>
+									</select>
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<label for="duration">Duration</label>
+									<select name="duration" id="duration">
+										<option value="2 hours">2 hours (Standard)</option>
+										<option value="3 hours">3 hours</option>
+										<option value="4 hours">4 hours</option>
+									</select>
+								</div>
+								<div class="col-12">
+									<label for="location">Preferred Location *</label>
+									<input type="text" name="location" id="location" placeholder="Park name, city, or general area" required />
+								</div>
+								<div class="col-12">
+									<label for="occasion">Special Occasion</label>
+									<input type="text" name="occasion" id="occasion" placeholder="Birthday, anniversary, proposal, etc." />
+								</div>
+								<div class="col-12">
+									<label for="message">Special Requests & Dietary Restrictions</label>
+									<textarea name="message" id="message" placeholder="Let us know about any dietary restrictions, allergies, theme preferences, or special requests..." rows="6"></textarea>
+								</div>
+								<div class="col-12">
+									<div id="form-message" style="display: none; padding: 1em; margin-bottom: 1em; border-radius: 4px;"></div>
+								</div>
+								<div class="col-12">
+									<ul class="actions">
+										<li><input type="submit" value="Submit Booking Request" class="primary" id="submit-btn" /></li>
+										<li><input type="reset" value="Clear" /></li>
+									</ul>
+								</div>
+							</div>
+						</form>
+					</div>
+				</section>
+			</div>
+
 					<!-- Footer -->
 				<footer id="footer">
 					<div class="inner">
@@ -82,6 +196,84 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/typed.js"></script>
+
+			<!-- Booking Form Handler -->
+			<script>
+				// Show success message if redirected with success parameter
+				window.addEventListener('load', function() {
+					const urlParams = new URLSearchParams(window.location.search);
+					if (urlParams.get('success') === 'true') {
+						const messageDiv = document.getElementById('form-message');
+						messageDiv.style.display = 'block';
+						messageDiv.style.backgroundColor = '#d4edda';
+						messageDiv.style.color = '#155724';
+						messageDiv.style.border = '1px solid #c3e6cb';
+						messageDiv.innerHTML = '<strong>Success!</strong> Thank you for your booking request! We\'ll review your details and get back to you within 24 hours to confirm availability.';
+
+						// Clear the form
+						document.getElementById('bookingForm').reset();
+
+						// Remove success parameter from URL
+						window.history.replaceState({}, document.title, window.location.pathname);
+
+						// Scroll to message
+						messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}
+				});
+
+				// Handle form submission
+				const form = document.getElementById('bookingForm');
+				form.addEventListener('submit', async function(e) {
+					e.preventDefault();
+
+					const submitBtn = document.getElementById('submit-btn');
+					const messageDiv = document.getElementById('form-message');
+
+					// Disable submit button
+					submitBtn.disabled = true;
+					submitBtn.value = 'Submitting Request...';
+
+					// Hide any previous messages
+					messageDiv.style.display = 'none';
+
+					try {
+						const formData = new FormData(form);
+						const response = await fetch('https://api.web3forms.com/submit', {
+							method: 'POST',
+							body: formData
+						});
+
+						const data = await response.json();
+
+						if (data.success) {
+							messageDiv.style.display = 'block';
+							messageDiv.style.backgroundColor = '#d4edda';
+							messageDiv.style.color = '#155724';
+							messageDiv.style.border = '1px solid #c3e6cb';
+							messageDiv.innerHTML = '<strong>Success!</strong> Thank you for your booking request! We\'ll review your details and get back to you within 24 hours to confirm availability.';
+							form.reset();
+
+							// Scroll to message
+							messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						} else {
+							throw new Error(data.message || 'Something went wrong');
+						}
+					} catch (error) {
+						messageDiv.style.display = 'block';
+						messageDiv.style.backgroundColor = '#f8d7da';
+						messageDiv.style.color = '#721c24';
+						messageDiv.style.border = '1px solid #f5c6cb';
+						messageDiv.innerHTML = '<strong>Error!</strong> There was a problem submitting your booking request. Please try again or contact us directly at support@wanderluxe-rentals.com';
+
+						// Scroll to message
+						messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					} finally {
+						// Re-enable submit button
+						submitBtn.disabled = false;
+						submitBtn.value = 'Submit Booking Request';
+					}
+				});
+			</script>
 
 	</body>
 </html>
